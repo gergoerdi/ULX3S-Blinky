@@ -71,15 +71,14 @@ endif
 
 
 ulx3s.bit: ulx3s_out.config
-	ecppack ulx3s_out.config ulx3s.bit
+	ecppack $< $@
 
 ulx3s_out.config: blinky.json
-	nextpnr-ecp5 --45k --json blinky.json --basecfg ulx3s_empty.config \
-		--lpf ulx3s_v20.lpf \
-		--textcfg ulx3s_out.config 
+	nextpnr-ecp5 --json $< --textcfg $@ \
+		--45k --lpf ulx3s_v20.lpf
 
 blinky.json: blinky.ys blinky.v
-	yosys blinky.ys 
+	yosys $<
 
 prog: ulx3s.bit
-	sudo ~wkt/.bin/ujprog *.bit
+	fujprog $<
